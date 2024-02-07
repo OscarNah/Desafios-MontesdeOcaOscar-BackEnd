@@ -1,0 +1,15 @@
+<h1> Productos </h1>
+<h2> Estos son todos nuestros productos</h2>
+
+<div class="carts">
+    {{#each productos}}
+        <div>
+            <ul class="card">
+                <li> Nombre: {{this.title}} </li>
+                <li>Descripción: {{this.description}} </li>
+                <li>Precio: {{this.price}} </li>
+                <li>Stock: {{this.stock}} </li>
+            </ul>
+    {{/each}}
+        </div>
+</div>
