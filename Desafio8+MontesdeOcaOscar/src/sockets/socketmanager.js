@@ -21,8 +21,13 @@ class SocketManager {
             });
 
             socket.on("agregarProducto", async (producto) => {
-                await productRepository.agregarProducto(producto);
-                this.emitUpdatedProducts(socket);
+                try {
+                    await productRepository.agregarProducto(producto);
+                    this.emitUpdatedProducts(socket);
+                } catch (error) {
+                    console.error("Error al agregar el producto:", error.message);
+                    // Aquí puedes emitir un evento de error al cliente si lo deseas
+                }
             });
 
             socket.on("message", async (data) => {

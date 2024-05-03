@@ -1,20 +1,25 @@
 const ProductModel = require("../models/product.model.js");
+const CustomError = require("../service/errors/custom-error.js");
 
 class ProductRepository {
     async agregarProducto({ title, description, price, img, code, stock, category, thumbnails }) {
         try {
             if (!title || !description || !price || !code || !stock || !category) {
-                console.log("Todos los campos son obligatorios");
-                return;
+                // Puedes imprimir el valor de mensaje aquí
+                console.log("Mensaje:", 'Todos los campos son obligatorios');
+                // Lanzar error de campos obligatorios
+                CustomError.crearError({ nombre: 'CamposObligatorios', mensaje: 'Todos los campos son obligatorios' });
             }
-
+    
             const existeProducto = await ProductModel.findOne({ code: code });
-
+    
             if (existeProducto) {
-                console.log("El código debe ser único, malditooo!!!");
-                return;
+                // Puedes imprimir el valor de mensaje aquí también si lo deseas
+                console.log("Mensaje:", 'El código debe ser único');
+                // Lanzar error de código duplicado
+                CustomError.crearError({ nombre: 'CodigoDuplicado', mensaje: 'El código debe ser único' });
             }
-
+    
             const newProduct = new ProductModel({
                 title,
                 description,
@@ -26,15 +31,23 @@ class ProductRepository {
                 status: true,
                 thumbnails: thumbnails || []
             });
-
+    
             await newProduct.save();
-
+    
             return newProduct;
-
+    
         } catch (error) {
-            throw new Error("Error");
+            // Manejar la excepción aquí
+            console.error("Error al agregar el producto:", error.message);
+            // Puedes lanzar la excepción nuevamente si es necesario
+            throw error;
         }
     }
+    
+    
+    
+    
+    
 
     async obtenerProductos(limit = 10, page = 1, sort, query) {
         try {

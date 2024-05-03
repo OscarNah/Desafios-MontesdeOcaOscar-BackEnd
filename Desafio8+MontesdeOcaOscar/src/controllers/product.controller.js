@@ -10,12 +10,14 @@ class ProductController {
         try {
             const resultado = await productRepository.agregarProducto(nuevoProducto);
             res.json(resultado);
-
+    
         } catch (error) {
-            res.status(500).send("Error");
+            console.error("Error al agregar el producto:", error.message);
+            res.status(500).send("Error al agregar el producto");
         }
     }
-
+    
+    
     async getProducts(req, res) {
         try {
             let { limit = 10, page = 1, sort, query } = req.query;

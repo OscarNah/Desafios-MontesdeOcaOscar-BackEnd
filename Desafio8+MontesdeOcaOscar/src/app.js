@@ -7,6 +7,7 @@ const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const initializePassport = require("./config/passport.config.js")(passport); // Llamando a initializePassport con passport como argumento
 const PUERTO = 8080;
+
 require("./database.js");
 
 const productsRouter = require("./routes/products.router.js");
@@ -15,10 +16,18 @@ const viewsRouter = require("./routes/views.router.js");
 const userRouter = require("./routes/user.router.js");
 const mockRouter = require("./routes/mock.router.js");
 
+const manejadorError = require("./middleware/error.js");
+
+//Utilizamos compresion:
+const compression = require("express-compression");
+
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("./src/public"));
+app.use(compression());
+// Middleware global de manejo de errores
+app.use(manejadorError);
 app.use(
   session({
     secret: "secretCoder",
