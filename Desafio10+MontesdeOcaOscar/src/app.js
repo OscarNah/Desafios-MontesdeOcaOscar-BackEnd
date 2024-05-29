@@ -48,6 +48,7 @@ app.use(express.static("./src/public"));
 app.use(cookieParser());
 app.use(compression());
 app.use(addLogger);
+
 // Configuración de sesiones
 app.use(
   session({
@@ -61,6 +62,7 @@ app.use(
     }),
   })
 );
+
 // Passport
 app.use(passport.initialize());
 app.use(passport.session());
